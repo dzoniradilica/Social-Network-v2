@@ -126,3 +126,79 @@ body {
   margin-top: 20px;
   font-size: 20px;
 }
+
+.overlay .profile-wrapper {
+  margin-top: 50px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gray;
+  padding: 50px;
+}
+
+.overlay .profile-wrapper img {
+  border-radius: 50%;
+  width: 124px;
+  height: 124px;
+}
+
+.overlay #commentForm {
+  margin-top: 50px;
+  border: 1px solid gray;
+  max-width: none !important;
+  background-color: transparent !important;
+  padding: 20px !important;
+}
+
+.overlay #commentForm .comment-form-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.overlay #commentForm .comment-form-wrapper textarea {
+  width: 85%;
+  height: 80px;
+  resize: none;
+}
+
+.overlay #commentForm .comment-form-wrapper button {
+  width: 15%;
+  height: 80px;
+  border: none;
+}
+
+#changeAccData {
+  display: none;
+  max-width: none;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+}
+
+.overlay #changeAccData .modal-wrapper {
+  position: relative;
+  max-width: 650px;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 50px;
+  border-radius: 10px;
+}
+
+.overlay #changeAccData .modal-wrapper #closeModal2 {
+  border: none;
+  background-color: transparent;
+  color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 20px;
+  font-size: 20px;
+}

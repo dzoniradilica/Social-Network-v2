@@ -31,4 +31,15 @@ class User {
 
     return data;
   }
+
+  async getSingleUser(userID) {
+    try {
+      const res = await fetch(`${this.apiUrl}/users/${userID}`);
+      const data = await res.json();
+
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
