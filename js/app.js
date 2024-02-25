@@ -1,9 +1,7 @@
 const session = new Session();
 const sessionID = session.getSession(document.cookie.substring(0, 4));
 
-if (sessionID === '') {
-  window.location.href = '/';
-} else window.location.href = 'hexa.html';
+if (sessionID) window.location.href = 'hexa.html';
 
 const config = {
   korisnicko_ime: {
@@ -50,8 +48,6 @@ closeModal.addEventListener('click', e => {
 
 let validator = new Validator(config, registrationForm);
 
-console.log(registrationForm);
-
 const createUser = async function () {
   registrationForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -78,6 +74,33 @@ const createUser = async function () {
 
 const getUsers = async function () {
   const user = new User();
+
+  const allUsers = await user.get();
+
+  allUsers.forEach(singleUser => {
+    const loginForm = document
+      .querySelector('#loginForm')
+      .addEventListener('submit', e => {
+        e.preventDefault();
+
+        let loginEmail = document.querySelector('#loginEmail');
+        let loginPassword = document.querySelector('#loginPassword');
+
+        if (
+          loginEmail.value === singleUser.email &&
+          loginPassword.value === singleUser.password
+        ) {
+          const session = new Session();
+          session.userID = singleUser.id;
+          session.createSession();
+
+          window.location.href = 'hexa.html';
+          loginEmail.value = loginPassword.value = '';
+        } else {
+          loginEmail.value = loginPassword.value = '';
+        }
+      });
+  });
 };
 
 createUser();
