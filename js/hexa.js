@@ -12,6 +12,7 @@ const changeEmail = document.querySelector('#email');
 const changeBtn = document.querySelector('#changeProfile');
 
 const logout = document.querySelector('#logout');
+const deleteBtn = document.querySelector('#deleteProfile');
 
 openModal.addEventListener('click', () => {
   changeAccData.style.display = 'block';
@@ -64,6 +65,20 @@ logout.addEventListener('click', e => {
   session.deleteSession();
 
   window.location.href = '/';
+});
+
+deleteBtn.addEventListener('click', e => {
+  e.preventDefault();
+
+  const deleteUser = async function () {
+    let user = new User();
+
+    user.delete(sessionID);
+    session.deleteSession();
+
+    window.location.href = '/';
+  };
+  deleteUser();
 });
 
 setUserData();

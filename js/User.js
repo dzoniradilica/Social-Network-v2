@@ -68,4 +68,14 @@ class User {
       console.log(err);
     }
   }
+
+  async delete(userID) {
+    try {
+      const res = await fetch(`${this.apiUrl}/users/${userID}`, {
+        method: 'DELETE',
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
