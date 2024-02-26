@@ -42,4 +42,30 @@ class User {
       console.log(err);
     }
   }
+
+  async changeUser(userID) {
+    try {
+      let data = {
+        username: this.username,
+        email: this.email,
+      };
+
+      data = JSON.stringify(data);
+
+      const res = await fetch(`${this.apiUrl}/users/${userID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      });
+
+      data = await res.json();
+
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
