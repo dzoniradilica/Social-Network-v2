@@ -13,6 +13,7 @@ const changeBtn = document.querySelector('#changeProfile');
 
 const logout = document.querySelector('#logout');
 const deleteBtn = document.querySelector('#deleteProfile');
+const btnPost = document.querySelector('#btnPost');
 
 openModal.addEventListener('click', () => {
   changeAccData.style.display = 'block';
@@ -79,6 +80,42 @@ deleteBtn.addEventListener('click', e => {
     window.location.href = '/';
   };
   deleteUser();
+});
+
+btnPost.addEventListener('click', e => {
+  e.preventDefault();
+
+  const createPost = async function () {
+    let post = new Post();
+    let user = new User();
+
+    let singleUser = await user.getSingleUser(sessionID);
+
+    let commentContent = document.querySelector('#contentComment');
+
+    post.userID = sessionID;
+    post.content = commentContent.value;
+    post.likes = 0;
+
+    const postData = await post.create();
+
+    commentContent.value = '';
+
+    const commentsDiv = document.querySelector('.comments');
+    commentsDiv.innerHTML += `
+        <div class="comment-info-wrapper">
+            <p class="comment-title">${postData.content}</p>
+            <span class="author">Autor:${singleUser.username}</span>
+        </div>
+
+        <div class="comment-inner-wrapper">
+            <img src="img/like.png" alt="" /> <span>${postData.likes} Likes</span>
+            <img src="img/comment.png" alt="" /> <span>Comments</span>
+        </div> 
+    `;
+  };
+
+  createPost();
 });
 
 setUserData();
