@@ -72,38 +72,20 @@ const createUser = async function () {
   });
 };
 
-const getUsers = async function () {
-  const user = new User();
+const loginUser = async function () {
+  document.querySelector('#loginForm').addEventListener('submit', e => {
+    e.preventDefault();
 
-  const allUsers = await user.get();
+    const user = new User();
+    const loginEmail = document.querySelector('#loginEmail');
+    const loginPassword = document.querySelector('#loginPassword');
 
-  allUsers.forEach(singleUser => {
-    const loginForm = document
-      .querySelector('#loginForm')
-      .addEventListener('submit', e => {
-        e.preventDefault();
+    user.email = loginEmail.value;
+    user.password = loginPassword.value;
 
-        console.log(singleUser);
-
-        let loginEmail = document.querySelector('#loginEmail');
-        let loginPassword = document.querySelector('#loginPassword');
-
-        if (
-          loginEmail.value === singleUser.email &&
-          loginPassword.value === singleUser.password
-        ) {
-          const session = new Session();
-          session.userID = singleUser.id;
-          session.createSession();
-
-          window.location.href = 'hexa.html';
-          loginEmail.value = loginPassword.value = '';
-        } else {
-          loginEmail.value = loginPassword.value = '';
-        }
-      });
+    user.login();
   });
 };
 
 createUser();
-getUsers();
+loginUser();

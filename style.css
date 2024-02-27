@@ -180,6 +180,8 @@ body {
   justify-content: space-between;
   align-items: center;
   position: relative;
+  margin-bottom: 80px;
+  margin-top: 20px;
 }
 
 .overlay #commentForm div.comments .comment-info-wrapper {
@@ -218,6 +220,37 @@ body {
   background: transparent;
   color: #910000;
   text-transform: uppercase;
+}
+
+#other-comment-wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  margin-bottom: 0;
+}
+
+#other-comment-wrapper input {
+  width: 85%;
+}
+
+#other-comment-wrapper button {
+  height: 49px;
+}
+
+#otherCommentWritten {
+  background-color: white;
+  width: 100%;
+  margin-top: 0;
+  position: absolute;
+  top: 84px;
+  color: black;
+}
+
+#otherCommentWritten p {
+  margin-top: 10px;
+  padding: 10px;
+  width: 80%;
+  border: 1px solid blanchedalmond;
 }
 
 #changeAccData {

@@ -43,7 +43,63 @@
                   <button id="btnPost">Objavi</button>
                 </div>
 
-                <div class="comments-wrapper"></div>
+                <div class="comments-wrapper">
+                  <div class="comments">
+                    <div class="comment-info-wrapper">
+                      <p class="comment-title">aolo</p>
+                      <span class="author">Autor: dzoni</span>
+                    </div>
+
+                    <div class="comment-inner-wrapper">
+                      <button
+                        class="likesBtn"
+                        style="
+                          display: flex;
+                          padding: 0;
+                          height: 40px;
+                          background-color: transparent;
+                          border: none;
+                          flex-direction: row;
+                          align-content: center;
+                          align-items: center;
+                          color: white;
+                        "
+                      >
+                        <img src="img/like.png" alt="" />
+                        <span>0 Likes</span>
+                      </button>
+
+                      <button
+                        class="comment-other-btn"
+                        style="
+                          display: flex;
+                          padding: 0;
+                          height: 40px;
+                          background-color: transparent;
+                          border: none;
+                          flex-direction: row;
+                          align-content: center;
+                          align-items: center;
+                          color: white;
+                        "
+                      >
+                        <img src="img/comment.png" alt="" />
+                        <span>Comments</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- <form action="" id="otherCommentForm">
+                    <div id="other-comment-wrapper">
+                      <input type="text" id="inputOtherComment" />
+                      <button id="btnOtherComment">Komentarisi</button>
+                    </div>
+                  </form>
+
+                  <div id="otherCommentWritten">
+                    <p>looooool</p>
+                  </div> -->
+                </div>
               </form>
 
               <div class="custom-modal">
@@ -87,6 +143,7 @@
     <script src="js/Session.js"></script>
     <script src="js/User.js"></script>
     <script src="js/Post.js"></script>
+    <script src="js/Comment.js"></script>
     <script src="js/hexa.js"></script>
   </body>
 </html>

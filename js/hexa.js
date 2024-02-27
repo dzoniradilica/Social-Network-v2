@@ -16,7 +16,7 @@ const deleteBtn = document.querySelector('#deleteProfile');
 const btnPost = document.querySelector('#btnPost');
 
 const addComments = function (commentsDiv, singlePost, author, currentUser) {
-  commentsDiv.innerHTML += `
+  const html = `
     <div class="comments">
         <div class="comment-info-wrapper">
             <p class="comment-title">${singlePost.content}</p>
@@ -38,7 +38,7 @@ const addComments = function (commentsDiv, singlePost, author, currentUser) {
                 } Likes</span>
             </button>    
 
-            <button class "comment-other-btn" style="display: flex;
+            <button class="comment-other-btn" style="display: flex;
             padding: 0;
             height: 40px;
             background-color: transparent;
@@ -56,6 +56,19 @@ const addComments = function (commentsDiv, singlePost, author, currentUser) {
         </div> 
     </div>
 `;
+
+  commentsDiv.insertAdjacentHTML('afterbegin', html);
+};
+
+const removePost = function (e) {
+  e.preventDefault();
+
+  let post = new Post();
+  let postID = +e.target.dataset.removeId;
+
+  post.delete(postID);
+
+  e.target.closest('.comments').remove();
 };
 
 openModal.addEventListener('click', () => {
@@ -154,9 +167,7 @@ btnPost.addEventListener('click', e => {
 
     document.querySelectorAll('.removeComment').forEach(el => {
       el.addEventListener('click', e => {
-        e.preventDefault();
-
-        e.target.closest('.comments').remove();
+        removePost(e);
       });
     });
   };
@@ -181,16 +192,32 @@ const displayAllPosts = async function () {
 
   document.querySelectorAll('.removeComment').forEach(el => {
     el.addEventListener('click', e => {
-      e.preventDefault();
-
-      let post = new Post();
-      let postID = +e.target.dataset.removeId;
-
-      post.delete(postID);
-
-      e.target.closest('.comments').remove();
+      removePost(e);
     });
   });
+
+  if (document.querySelectorAll('.comment-other-btn')) {
+    const commentBtns = document.querySelectorAll('.comment-other-btn');
+
+    commentBtns.forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+
+        const comment = prompt('Napisi komentar');
+        const commentsDiv = e.target.closest('.comments');
+
+        if (!comment) {
+          console.log('greska');
+        } else {
+          commentsDiv.innerHTML += `
+            <div id="otherCommentWritten">
+                <p>${comment}</p>
+            </div>
+            `;
+        }
+      });
+    });
+  }
 };
 
 setUserData();

@@ -25,6 +25,31 @@ class User {
     return (data = await res.json());
   }
 
+  async login() {
+    const res = await fetch(`${this.apiUrl}/users`);
+    const data = await res.json();
+
+    let loginSuccs = 0;
+
+    data.forEach(signleUser => {
+      if (
+        signleUser.email === this.email &&
+        signleUser.password === this.password
+      ) {
+        session.userID = signleUser.id;
+        session.createSession();
+
+        loginSuccs = 1;
+
+        window.location.href = 'hexa.html';
+      }
+    });
+
+    if (loginSuccs === 0) {
+      alert('Pogresan email ili lozinka');
+    }
+  }
+
   async get() {
     const res = await fetch(`${this.apiUrl}/users`);
     const data = await res.json();
