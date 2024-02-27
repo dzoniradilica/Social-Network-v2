@@ -211,6 +211,15 @@ body {
   margin-bottom: 20px;
 }
 
+.overlay #commentForm div.comments .comment-inner-wrapper .removeComment {
+  margin-bottom: 20px;
+  border: none;
+  margin-right: 5px;
+  background: transparent;
+  color: #910000;
+  text-transform: uppercase;
+}
+
 #changeAccData {
   display: none;
   max-width: none;

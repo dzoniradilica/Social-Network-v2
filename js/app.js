@@ -83,15 +83,14 @@ const getUsers = async function () {
       .addEventListener('submit', e => {
         e.preventDefault();
 
+        console.log(singleUser);
+
         let loginEmail = document.querySelector('#loginEmail');
         let loginPassword = document.querySelector('#loginPassword');
 
         if (
-          allUsers.some(
-            user =>
-              user.email === loginEmail.value &&
-              user.password === loginPassword.value
-          )
+          loginEmail.value === singleUser.email &&
+          loginPassword.value === singleUser.password
         ) {
           const session = new Session();
           session.userID = singleUser.id;

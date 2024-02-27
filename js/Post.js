@@ -31,4 +31,14 @@ class Post {
 
     return data;
   }
+
+  async delete(postID) {
+    try {
+      const res = await fetch(`${this.apiUrl}/posts/${postID}`, {
+        method: 'DELETE',
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
