@@ -24,21 +24,15 @@ const addComments = function (commentsDiv, singlePost, author, currentUser) {
         </div>
 
         <div class="comment-inner-wrapper">
-            <button class="likesBtn" style="display: flex;
-            padding: 0;
-            height: 40px;
-            background-color: transparent;
-            border: none;
-            flex-direction: row;
-            align-content: center;
-            align-items: center;
-            color: white;">
-                <img src="img/like.png" alt="" /> <span>${
-                  singlePost.likes
-                } Likes</span>
-            </button>    
+            <img  data-likes-id="${
+              singlePost.id
+            }" src="img/like.png" class="likesBtn" style="cursor: pointer;" /> <span>${
+    singlePost.likes
+  }</span> <span>Likes</span>
 
-            <button class="comment-other-btn" style="display: flex;
+            <button class="comment-other-btn" data-comment-id="${
+              singlePost.id
+            }" style="display: flex;
             padding: 0;
             height: 40px;
             background-color: transparent;
@@ -46,7 +40,11 @@ const addComments = function (commentsDiv, singlePost, author, currentUser) {
             flex-direction: row;
             align-content: center;
             align-items: center;
-            color: white;"><img src="img/comment.png" alt="" /> <span>Comments</span></button>
+            color: white;"><img data-comment-id="${
+              singlePost.id
+            }" src="img/comment.png"/> <span data-comment-id="${
+    singlePost.id
+  }">Comments</span></button>
 
             ${
               author.id === currentUser.id
@@ -203,18 +201,44 @@ const displayAllPosts = async function () {
       btn.addEventListener('click', e => {
         e.preventDefault();
 
-        const comment = prompt('Napisi komentar');
+        const postID = +e.target.dataset.commentId;
+        const comment = new Comment();
+        const commentText = prompt('Napisi komentar');
         const commentsDiv = e.target.closest('.comments');
 
-        if (!comment) {
+        comment.userID = sessionID;
+        comment.postID = postID;
+        comment.content = commentText;
+
+        comment.create();
+
+        if (!commentText) {
           console.log('greska');
         } else {
           commentsDiv.innerHTML += `
             <div id="otherCommentWritten">
-                <p>${comment}</p>
+                <p>${commentText}</p>
             </div>
             `;
         }
+      });
+    });
+  }
+
+  if (document.querySelector('.likesBtn')) {
+    const likeBtn = document.querySelectorAll('.likesBtn');
+
+    likeBtn.forEach(btn => {
+      btn.addEventListener('click', e => {
+        let post = new Post();
+        let span = e.target.nextElementSibling;
+        let spanNum = Number(span.textContent);
+        let postID = +e.target.dataset.likesId;
+        post.likes = ++spanNum;
+
+        post.changeLikes(postID);
+
+        span.textContent = post.likes;
       });
     });
   }
