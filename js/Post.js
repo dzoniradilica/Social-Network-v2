@@ -24,4 +24,11 @@ class Post {
 
     return data;
   }
+
+  async getAll() {
+    const res = await fetch(`${this.apiUrl}/posts`);
+    const data = await res.json();
+
+    return data;
+  }
 }

@@ -15,6 +15,22 @@ const logout = document.querySelector('#logout');
 const deleteBtn = document.querySelector('#deleteProfile');
 const btnPost = document.querySelector('#btnPost');
 
+const addComments = function (commentsDiv, singlePost, author) {
+  commentsDiv.innerHTML += `
+        <div class="comments">
+            <div class="comment-info-wrapper">
+                <p class="comment-title">${singlePost.content}</p>
+                <span class="author">Autor:${author.username}</span>
+            </div>
+
+            <div class="comment-inner-wrapper">
+                <img src="img/like.png" alt="" /> <span>${singlePost.likes} Likes</span>
+                <img src="img/comment.png" alt="" /> <span>Comments</span>
+            </div> 
+        </div>
+    `;
+};
+
 openModal.addEventListener('click', () => {
   changeAccData.style.display = 'block';
 });
@@ -89,7 +105,7 @@ btnPost.addEventListener('click', e => {
     let post = new Post();
     let user = new User();
 
-    let singleUser = await user.getSingleUser(sessionID);
+    let currentUser = await user.getSingleUser(sessionID);
 
     let commentContent = document.querySelector('#contentComment');
 
@@ -101,21 +117,28 @@ btnPost.addEventListener('click', e => {
 
     commentContent.value = '';
 
-    const commentsDiv = document.querySelector('.comments');
-    commentsDiv.innerHTML += `
-        <div class="comment-info-wrapper">
-            <p class="comment-title">${postData.content}</p>
-            <span class="author">Autor:${singleUser.username}</span>
-        </div>
-
-        <div class="comment-inner-wrapper">
-            <img src="img/like.png" alt="" /> <span>${postData.likes} Likes</span>
-            <img src="img/comment.png" alt="" /> <span>Comments</span>
-        </div> 
-    `;
+    const commentsDiv = document.querySelector('.comments-wrapper');
+    addComments(commentsDiv, postData, currentUser);
   };
 
   createPost();
 });
 
+const displayAllPosts = async function () {
+  const user = new User();
+  const post = new Post();
+  const allPosts = await post.getAll();
+  let allUsers = await user.get();
+
+  const commentsDiv = document.querySelector('.comments-wrapper');
+  allPosts.forEach(singlePost => {
+    let author = allUsers.find(
+      singleUser => singleUser.id === singlePost.user_id
+    );
+
+    addComments(commentsDiv, singlePost, author);
+  });
+};
+
 setUserData();
+displayAllPosts();

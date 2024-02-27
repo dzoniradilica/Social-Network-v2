@@ -173,21 +173,42 @@ body {
 .overlay #commentForm div.comments {
   background-color: rgba(255, 255, 255, 0.5);
   color: black !important;
-  display: flex !important;
+  text-align: left;
+  width: 100%;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
-  text-align: left;
+  align-items: center;
+  position: relative;
+}
+
+.overlay #commentForm div.comments .comment-info-wrapper {
+  text-align: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  margin-left: 20px;
 }
 
 .overlay #commentForm div.comments .comment-inner-wrapper {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  position: absolute;
+  right: 0;
+  bottom: -20px;
 }
 
 .overlay #commentForm div.comments .comment-inner-wrapper span {
-  margin-right: 10px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.overlay #commentForm div.comments .comment-inner-wrapper img {
+  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 #changeAccData {
