@@ -30,4 +30,10 @@ class Comment {
 
     return data;
   }
+
+  async deleteComm(comment_id) {
+    const res = await fetch(`${this.apiUrl}/comments/${comment_id}`, {
+      method: 'DELETE',
+    });
+  }
 }

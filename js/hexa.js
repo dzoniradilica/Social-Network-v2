@@ -17,7 +17,7 @@ const btnPost = document.querySelector('#btnPost');
 
 const addPosts = function (postsDiv, singlePost, author, currentUser) {
   let html = `
-    <div class="single-post">
+    <div class="single-post" data-post-id="${singlePost.id}">
       <div class="post-content">
         <p>${singlePost.content}</p>
       </div>
@@ -41,7 +41,7 @@ const addPosts = function (postsDiv, singlePost, author, currentUser) {
 
           ${
             author.id === currentUser.id
-              ? `<button class="removeComment" data-remove-id="${singlePost.id}">Obrisi</button>`
+              ? `<button class="removePost" data-remove-id="${singlePost.id}">Obrisi</button>`
               : ''
           }
         </div>
@@ -61,13 +61,96 @@ const addPosts = function (postsDiv, singlePost, author, currentUser) {
   postsDiv.insertAdjacentHTML('afterbegin', html);
 };
 
-const removePost = function (e) {
+const commentBtns = function () {
+  const commentBtns = document.querySelectorAll('.comment-other-btn');
+  commentBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+
+      const comment = new Comment();
+
+      const singlePostDiv = e.currentTarget.closest('.single-post');
+
+      singlePostDiv.querySelector('.comment-form').style.display = 'block';
+
+      e.currentTarget.setAttribute('disabled', true);
+
+      document.querySelectorAll('#postComment').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+
+          let commentContent = e.target.previousElementSibling;
+          const postID = +e.target.dataset.commentId;
+
+          comment.userID = sessionID;
+          comment.postID = postID;
+          comment.content = commentContent.value;
+
+          let singlePost = e.target.closest('.single-post');
+          let html = `
+            <div class="comment-content">
+              <p>${commentContent.value}</p>
+            </div>
+          `;
+
+          singlePost.insertAdjacentHTML('beforeend', html);
+
+          comment.create();
+
+          singlePost.querySelector('.comment-form').style.display = 'none';
+          singlePost.querySelector('.comment-form').innerHTML = '';
+        });
+      });
+    });
+  });
+};
+
+const likeBtns = function () {
+  const likeBtn = document.querySelectorAll('.likesBtn');
+
+  likeBtn.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+
+      let post = new Post();
+      let span = e.currentTarget.nextElementSibling;
+      let spanNum = Number(span.textContent);
+      let postID = +e.currentTarget.dataset.likesId;
+      post.likes = ++spanNum;
+
+      post.changeLikes(postID);
+
+      span.textContent = post.likes;
+
+      e.currentTarget.setAttribute('disabled', true);
+    });
+  });
+};
+
+const removePost = function () {
+  document.querySelectorAll('.removePost').forEach(el => {
+    el.addEventListener('click', e => {
+      removePostData(e);
+    });
+  });
+};
+
+const removePostData = async function (e) {
   e.preventDefault();
 
   let post = new Post();
+  let comment = new Comment();
   let postID = +e.target.dataset.removeId;
+  let singlePost = e.target.closest('.single-post');
+  let allCommetns = singlePost.querySelectorAll('.comment-content');
 
   post.delete(postID);
+
+  allCommetns.forEach(singleComment => {
+    let comment_id = Number(singleComment.getAttribute('data-comment-id'));
+
+    comment.deleteComm(comment_id);
+  });
 
   e.target.closest('.single-post').remove();
 };
@@ -148,15 +231,15 @@ btnPost.addEventListener('click', e => {
     let allUsers = await user.get();
     let currentUser = await user.getSingleUser(sessionID);
 
-    let commentContent = document.querySelector('#contentPost');
+    let postContent = document.querySelector('#contentPost');
 
     post.userID = sessionID;
-    post.content = commentContent.value;
+    post.content = postContent.value;
     post.likes = 0;
 
     const postData = await post.create();
 
-    commentContent.value = '';
+    postContent.value = '';
 
     let author = allUsers.find(
       singleUser => singleUser.id === postData.user_id
@@ -166,11 +249,11 @@ btnPost.addEventListener('click', e => {
 
     addPosts(postsDiv, postData, author, currentUser);
 
-    document.querySelectorAll('.removeComment').forEach(el => {
-      el.addEventListener('click', e => {
-        removePost(e);
-      });
-    });
+    removePost();
+
+    likeBtns();
+
+    commentBtns();
   };
 
   createPost();
@@ -191,144 +274,45 @@ const displayAllPosts = async function () {
     addPosts(postsDiv, singlePost, author, currentUser);
   });
 
-  document.querySelectorAll('.removeComment').forEach(el => {
-    el.addEventListener('click', e => {
-      removePost(e);
-    });
-  });
+  removePost();
 
-  const commentBtns = document.querySelectorAll('.comment-other-btn');
-  commentBtns.forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-
-      const comment = new Comment();
-
-      const singlePostDiv = e.currentTarget.closest('.single-post');
-
-      singlePostDiv.querySelector('.comment-form').style.display = 'block';
-
-      e.currentTarget.setAttribute('disabled', true);
-
-      document.querySelectorAll('#postComment').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.preventDefault();
-
-          let commentContent = e.target.previousElementSibling;
-          const postID = +e.target.dataset.commentId;
-
-          comment.userID = sessionID;
-          comment.postID = postID;
-          comment.content = commentContent.value;
-
-          let singlePost = e.target.closest('.single-post');
-          let html = `
-            <div class="comment-content">
-              <p>${commentContent.value}</p>
-            </div>
-          `;
-
-          singlePost.insertAdjacentHTML('beforeend', html);
-
-          comment.create();
-
-          singlePost.querySelector('.comment-form').style.display = 'none';
-          singlePost.querySelector('.comment-form').innerHTML = '';
-        });
-      });
-    });
-  });
-
-  const likeBtn = document.querySelectorAll('.likesBtn');
-
-  likeBtn.forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-
-      let post = new Post();
-      let span = e.currentTarget.nextElementSibling;
-      let spanNum = Number(span.textContent);
-      let postID = +e.currentTarget.dataset.likesId;
-      post.likes = ++spanNum;
-
-      post.changeLikes(postID);
-
-      span.textContent = post.likes;
-
-      e.currentTarget.setAttribute('disabled', true);
-    });
-  });
+  commentBtns();
 };
 
-// const displayAllComments = function () {
-//   setTimeout(() => {
-//     const displayAllComments2 = async function () {
-//       let post = new Post();
-//       let comment = new Comment();
+const displayAllComments2 = function () {
+  setTimeout(() => {
+    const displayAllComments = async function () {
+      let post = new Post();
+      let comment = new Comment();
+      let allPosts = await post.getAll();
 
-//       const allCommetns = await comment.getAll();
+      const allCommetns = await comment.getAll();
 
-//       allCommetns.forEach((singleComm, i) => {
-//         const singlePost = post.getSinglePost(singleComm.post_id);
+      document.querySelectorAll('.single-post').forEach((singlePost, i) => {
+        const post_id = +singlePost.getAttribute('data-post-id');
 
-//         singlePost.then(data => {
-//           console.log(data);
-//         });
+        allCommetns.forEach(singleComment => {
+          if (singleComment.post_id === post_id) {
+            singlePost.innerHTML += `
+              <div class="comment-content" data-comment-id="${singleComment.id}">
+                <p>${singleComment.content}</p>
+              </div>
+            `;
+          }
+        });
+      });
 
-//         // singlePost.innerHTML += `
-//         // <div class="comment-content">
-//         //   <p>${singleComm.content}</p>
-//         // </div>
-//         // `;
-//       });
+      removePost();
 
-//       const commentBtns = document.querySelectorAll('.comment-other-btn');
-//       commentBtns.forEach(btn => {
-//         btn.addEventListener('click', e => {
-//           e.preventDefault();
+      likeBtns();
 
-//           const comment = new Comment();
+      commentBtns();
+    };
 
-//           const singlePostDiv = e.currentTarget.closest('.single-post');
-
-//           singlePostDiv.querySelector('.comment-form').style.display = 'block';
-
-//           e.currentTarget.setAttribute('disabled', true);
-
-//           document.querySelectorAll('#postComment').forEach(btn => {
-//             btn.addEventListener('click', e => {
-//               e.preventDefault();
-
-//               let commentContent = e.target.previousElementSibling;
-//               const postID = +e.target.dataset.commentId;
-
-//               comment.userID = sessionID;
-//               comment.postID = postID;
-//               comment.content = commentContent.value;
-
-//               let singlePost = e.target.closest('.single-post');
-//               let html = `
-//             <div class="comment-content">
-//               <p>${commentContent.value}</p>
-//             </div>
-//           `;
-
-//               singlePost.insertAdjacentHTML('beforeend', html);
-
-//               comment.create();
-
-//               singlePost.querySelector('.comment-form').style.display = 'none';
-//               singlePost.querySelector('.comment-form').innerHTML = '';
-//             });
-//           });
-//         });
-//       });
-//     };
-
-//     displayAllComments2();
-//   }, 3000);
-// };
+    displayAllComments();
+  }, 1000);
+};
 
 setUserData();
 displayAllPosts();
-// displayAllComments();
+displayAllComments2();
