@@ -22,7 +22,12 @@ class Comment {
     });
 
     data = await res.json();
+  }
 
-    console.log(data);
+  async getAll() {
+    const res = await fetch(`${this.apiUrl}/comments`);
+    const data = await res.json();
+
+    return data;
   }
 }

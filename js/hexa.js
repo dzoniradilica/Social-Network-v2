@@ -28,9 +28,7 @@ const addPosts = function (postsDiv, singlePost, author, currentUser) {
         <p class="author">Autor: ${author?.username}</p>
 
         <div class="post-btns-wrapper">
-          <button onclick="likePost(this)" data-likes-id="${
-            singlePost.id
-          }" class="likesBtn">
+          <button data-likes-id="${singlePost.id}" class="likesBtn">
             <img src="img/like.png" />
           </button>
           <span>${singlePost.likes}</span>
@@ -71,7 +69,7 @@ const removePost = function (e) {
 
   post.delete(postID);
 
-  e.target.closest('.comments').remove();
+  e.target.closest('.single-post').remove();
 };
 
 openModal.addEventListener('click', () => {
@@ -262,5 +260,75 @@ const displayAllPosts = async function () {
   });
 };
 
+// const displayAllComments = function () {
+//   setTimeout(() => {
+//     const displayAllComments2 = async function () {
+//       let post = new Post();
+//       let comment = new Comment();
+
+//       const allCommetns = await comment.getAll();
+
+//       allCommetns.forEach((singleComm, i) => {
+//         const singlePost = post.getSinglePost(singleComm.post_id);
+
+//         singlePost.then(data => {
+//           console.log(data);
+//         });
+
+//         // singlePost.innerHTML += `
+//         // <div class="comment-content">
+//         //   <p>${singleComm.content}</p>
+//         // </div>
+//         // `;
+//       });
+
+//       const commentBtns = document.querySelectorAll('.comment-other-btn');
+//       commentBtns.forEach(btn => {
+//         btn.addEventListener('click', e => {
+//           e.preventDefault();
+
+//           const comment = new Comment();
+
+//           const singlePostDiv = e.currentTarget.closest('.single-post');
+
+//           singlePostDiv.querySelector('.comment-form').style.display = 'block';
+
+//           e.currentTarget.setAttribute('disabled', true);
+
+//           document.querySelectorAll('#postComment').forEach(btn => {
+//             btn.addEventListener('click', e => {
+//               e.preventDefault();
+
+//               let commentContent = e.target.previousElementSibling;
+//               const postID = +e.target.dataset.commentId;
+
+//               comment.userID = sessionID;
+//               comment.postID = postID;
+//               comment.content = commentContent.value;
+
+//               let singlePost = e.target.closest('.single-post');
+//               let html = `
+//             <div class="comment-content">
+//               <p>${commentContent.value}</p>
+//             </div>
+//           `;
+
+//               singlePost.insertAdjacentHTML('beforeend', html);
+
+//               comment.create();
+
+//               singlePost.querySelector('.comment-form').style.display = 'none';
+//               singlePost.querySelector('.comment-form').innerHTML = '';
+//             });
+//           });
+//         });
+//       });
+//     };
+
+//     displayAllComments2();
+//   }, 3000);
+// };
+
 setUserData();
 displayAllPosts();
+// displayAllComments();
