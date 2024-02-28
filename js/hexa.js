@@ -15,47 +15,50 @@ const logout = document.querySelector('#logout');
 const deleteBtn = document.querySelector('#deleteProfile');
 const btnPost = document.querySelector('#btnPost');
 
-const addComments = function (commentsDiv, singlePost, author, currentUser) {
-  const html = `
-    <div class="comments">
-        <div class="comment-info-wrapper">
-            <p class="comment-title">${singlePost.content}</p>
-            <span class="author">Autor:${author?.username}</span>
+const addPosts = function (postsDiv, singlePost, author, currentUser) {
+  let html = `
+    <div class="single-post">
+      <div class="post-content">
+        <p>${singlePost.content}</p>
+      </div>
+
+      <hr />
+
+      <div class="post-info">
+        <p class="author">Autor: ${author?.username}</p>
+
+        <div class="post-btns-wrapper">
+          <button data-likes-id="${singlePost.id}" class="likesBtn">
+            <img src="img/like.png" />
+          </button>
+          <span>${singlePost.likes}</span>
+          <span>Likes</span>
+
+          <button data-comment-id="${singlePost.id}"  class="comment-other-btn">
+            <img src="img/comment.png" />
+          </button>
+          <span>Comment</span>
+
+          ${
+            author.id === currentUser.id
+              ? `<button class="removeComment" data-remove-id="${singlePost.id}">Obrisi</button>`
+              : ''
+          }
         </div>
+      </div>
 
-        <div class="comment-inner-wrapper">
-            <img  data-likes-id="${
-              singlePost.id
-            }" src="img/like.png" class="likesBtn" style="cursor: pointer;" /> <span>${
-    singlePost.likes
-  }</span> <span>Likes</span>
+        <hr />
 
-            <button class="comment-other-btn" data-comment-id="${
-              singlePost.id
-            }" style="display: flex;
-            padding: 0;
-            height: 40px;
-            background-color: transparent;
-            border: none;
-            flex-direction: row;
-            align-content: center;
-            align-items: center;
-            color: white;"><img data-comment-id="${
-              singlePost.id
-            }" src="img/comment.png"/> <span data-comment-id="${
-    singlePost.id
-  }">Comments</span></button>
-
-            ${
-              author.id === currentUser.id
-                ? `<button class="removeComment" data-remove-id="${singlePost.id}">Obrisi</button>`
-                : ''
-            }
-        </div> 
+        <div class="comment-form">
+          <input type="text" id="commentInput" />
+          <button  data-comment-id="${
+            singlePost.id
+          }" class="postComment">Napisi komentar</button>
+        </div>
     </div>
 `;
 
-  commentsDiv.insertAdjacentHTML('afterbegin', html);
+  postsDiv.insertAdjacentHTML('afterbegin', html);
 };
 
 const removePost = function (e) {
@@ -145,7 +148,7 @@ btnPost.addEventListener('click', e => {
     let allUsers = await user.get();
     let currentUser = await user.getSingleUser(sessionID);
 
-    let commentContent = document.querySelector('#contentComment');
+    let commentContent = document.querySelector('#contentPost');
 
     post.userID = sessionID;
     post.content = commentContent.value;
@@ -159,9 +162,9 @@ btnPost.addEventListener('click', e => {
       singleUser => singleUser.id === postData.user_id
     );
 
-    const commentsDiv = document.querySelector('.comments-wrapper');
+    const postsDiv = document.querySelector('.posts-wrapper');
 
-    addComments(commentsDiv, postData, author, currentUser);
+    addPosts(postsDiv, postData, author, currentUser);
 
     document.querySelectorAll('.removeComment').forEach(el => {
       el.addEventListener('click', e => {
@@ -180,12 +183,12 @@ const displayAllPosts = async function () {
   let allUsers = await user.get();
   let currentUser = await user.getSingleUser(sessionID);
 
-  const commentsDiv = document.querySelector('.comments-wrapper');
+  const postsDiv = document.querySelector('.posts-wrapper');
   let author;
   allPosts.forEach(singlePost => {
     author = allUsers.find(singleUser => singleUser.id === singlePost.user_id);
 
-    addComments(commentsDiv, singlePost, author, currentUser);
+    addPosts(postsDiv, singlePost, author, currentUser);
   });
 
   document.querySelectorAll('.removeComment').forEach(el => {
@@ -194,54 +197,67 @@ const displayAllPosts = async function () {
     });
   });
 
-  if (document.querySelectorAll('.comment-other-btn')) {
-    const commentBtns = document.querySelectorAll('.comment-other-btn');
+  const commentBtns = document.querySelectorAll('.comment-other-btn');
+  commentBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
 
-    commentBtns.forEach(btn => {
-      btn.addEventListener('click', e => {
+      const comment = new Comment();
+
+      let commentForm = document.querySelector('.comment-form');
+      commentForm.style.display = 'block';
+
+      e.currentTarget.setAttribute('disabled', true);
+
+      document.querySelector('.postComment').addEventListener('click', e => {
         e.preventDefault();
 
-        const postID = +e.target.dataset.commentId;
-        const comment = new Comment();
-        const commentText = prompt('Napisi komentar');
-        const commentsDiv = e.target.closest('.comments');
+        let commentContent = document.querySelector('#commentInput');
 
-        comment.userID = sessionID;
-        comment.postID = postID;
-        comment.content = commentText;
+        if (commentContent.value) {
+          const postID = +e.target.dataset.commentId;
 
-        comment.create();
+          comment.userID = sessionID;
+          comment.postID = postID;
+          comment.content = commentContent.value;
 
-        if (!commentText) {
-          console.log('greska');
-        } else {
-          commentsDiv.innerHTML += `
-            <div id="otherCommentWritten">
-                <p>${commentText}</p>
+          comment.create();
+
+          document.querySelector('.single-post').innerHTML += `
+            <div class="comment-content">
+              <p>${commentContent.value}</p>
             </div>
-            `;
+          `;
+
+          document.querySelector('.comment-form').style.display = 'none';
+        } else {
+          alert('Moras napisati komentar');
         }
+
+        commentContent.value = '';
       });
     });
-  }
+  });
 
-  if (document.querySelector('.likesBtn')) {
-    const likeBtn = document.querySelectorAll('.likesBtn');
+  const likeBtn = document.querySelectorAll('.likesBtn');
 
-    likeBtn.forEach(btn => {
-      btn.addEventListener('click', e => {
-        let post = new Post();
-        let span = e.target.nextElementSibling;
-        let spanNum = Number(span.textContent);
-        let postID = +e.target.dataset.likesId;
-        post.likes = ++spanNum;
+  likeBtn.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
 
-        post.changeLikes(postID);
+      let post = new Post();
+      let span = e.currentTarget.nextElementSibling;
+      let spanNum = Number(span.textContent);
+      let postID = +e.currentTarget.dataset.likesId;
+      post.likes = ++spanNum;
 
-        span.textContent = post.likes;
-      });
+      post.changeLikes(postID);
+
+      span.textContent = post.likes;
+
+      e.currentTarget.setAttribute('disabled', true);
     });
-  }
+  });
 };
 
 setUserData();

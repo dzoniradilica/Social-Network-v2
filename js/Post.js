@@ -25,6 +25,17 @@ class Post {
     return data;
   }
 
+  async getSinglePost(postID) {
+    try {
+      const res = await fetch(`${this.apiUrl}/posts/${postID}`);
+      const data = await res.json();
+
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async getAll() {
     const res = await fetch(`${this.apiUrl}/posts`);
     const data = await res.json();
@@ -59,8 +70,6 @@ class Post {
       });
 
       data = await res.json();
-
-      console.log(data);
 
       return data;
     } catch (err) {

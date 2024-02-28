@@ -244,6 +244,18 @@ body {
   margin-right: 20px;
 }
 
+.overlay
+  #postForm
+  .posts-wrapper
+  .single-post
+  .post-info
+  .post-btns-wrapper
+  .removeComment {
+  color: #b50404;
+  background-color: black;
+  padding: 5px 10px;
+}
+
 .overlay #postForm .posts-wrapper .single-post .comment-form {
   max-width: 93%;
   margin-left: auto;
@@ -256,7 +268,7 @@ body {
   width: 79%;
 }
 
-.overlay #postForm .posts-wrapper #postComment {
+.overlay #postForm .posts-wrapper .postComment {
   width: 20%;
 }
 
