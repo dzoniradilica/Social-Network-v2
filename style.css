@@ -33,14 +33,14 @@ body {
   margin-bottom: 10px;
 }
 
-.overlay form {
+.overlay #loginForm {
   max-width: 650px;
   margin: auto;
   background-color: rgba(255, 255, 255, 0.5);
   padding: 50px;
 }
 
-.overlay form div {
+.overlay #loginForm div {
   text-align: center;
   color: white;
   display: flex;
@@ -50,18 +50,18 @@ body {
   margin-bottom: 20px;
 }
 
-.overlay form div label {
+.overlay #loginForm div label {
   margin-bottom: 10px;
   font-size: 18px;
   font-weight: bold;
 }
 
-.overlay form div input {
+.overlay #loginForm div input {
   padding: 10px 50px;
   text-align: left;
 }
 
-.overlay form div button {
+.overlay #loginForm div button {
   padding: 5px 30px;
   font-size: 16px;
   cursor: pointer;
@@ -122,9 +122,37 @@ body {
   color: white;
   position: absolute;
   top: 0;
-  right: 0;
+  right: 20px;
   margin-top: 20px;
   font-size: 20px;
+  cursor: pointer;
+}
+
+.overlay #registrationForm .modal-wrapper div {
+  text-align: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.overlay #registrationForm .modal-wrapper div label {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.overlay #registrationForm .modal-wrapper div input {
+  padding: 10px 50px;
+  text-align: left;
+}
+
+.overlay #registrationForm .modal-wrapper div button {
+  padding: 5px 30px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .overlay .profile-wrapper {
@@ -145,7 +173,7 @@ body {
   height: 124px;
 }
 
-.overlay #commentForm {
+.overlay #postForm {
   margin-top: 50px;
   border: 1px solid gray;
   max-width: none !important;
@@ -153,24 +181,94 @@ body {
   padding: 20px !important;
 }
 
-.overlay #commentForm .comment-form-wrapper {
+.overlay #postForm .post-form-wrapper {
   display: flex;
   flex-direction: row;
 }
 
-.overlay #commentForm .comment-form-wrapper textarea {
+.overlay #postForm .post-form-wrapper textarea {
   width: 85%;
   height: 80px;
   resize: none;
 }
 
-.overlay #commentForm .comment-form-wrapper button {
+.overlay #postForm .post-form-wrapper button {
   width: 15%;
   height: 80px;
   border: none;
 }
 
-.overlay #commentForm div.comments {
+.overlay #postForm .posts-wrapper .single-post {
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-top: 20px;
+  color: white;
+  padding-bottom: 20px;
+}
+
+.overlay #postForm .posts-wrapper .single-post .post-content {
+  font-size: 20px;
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.overlay #postForm .posts-wrapper .single-post .post-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.overlay #postForm .posts-wrapper .single-post .post-info .author {
+  margin-left: 20px;
+}
+
+.overlay
+  #postForm
+  .posts-wrapper
+  .single-post
+  .post-info
+  .post-btns-wrapper
+  button {
+  border: 0;
+  background: transparent;
+  color: white;
+  margin-right: 20px;
+}
+
+.overlay
+  #postForm
+  .posts-wrapper
+  .single-post
+  .post-info
+  .post-btns-wrapper
+  span {
+  margin-right: 20px;
+}
+
+.overlay #postForm .posts-wrapper .single-post .comment-form {
+  max-width: 93%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+  display: none;
+}
+
+.overlay #postForm .posts-wrapper #commentInput {
+  width: 79%;
+}
+
+.overlay #postForm .posts-wrapper #postComment {
+  width: 20%;
+}
+
+.overlay #postForm .posts-wrapper .single-post .comment-content {
+  border: 1px solid ghostwhite;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+/* .overlay #commentForm div.comments {
   background-color: rgba(255, 255, 255, 0.5);
   color: black !important;
   text-align: left;
@@ -220,7 +318,7 @@ body {
   background: transparent;
   color: #910000;
   text-transform: uppercase;
-}
+} */
 
 #other-comment-wrapper {
   display: flex;

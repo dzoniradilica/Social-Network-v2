@@ -246,3 +246,5 @@ const displayAllPosts = async function () {
 
 setUserData();
 displayAllPosts();
+
+console.log('radi');

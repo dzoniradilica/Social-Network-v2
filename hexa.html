@@ -31,11 +31,11 @@
             </div>
 
             <div class="col-md-9">
-              <form action="" id="commentForm">
-                <div class="comment-form-wrapper">
+              <form action="" id="postForm">
+                <div class="post-form-wrapper">
                   <textarea
                     name=""
-                    id="contentComment"
+                    id="contentPost"
                     cols="30"
                     rows="10"
                   ></textarea>
@@ -43,7 +43,43 @@
                   <button id="btnPost">Objavi</button>
                 </div>
 
-                <div class="comments-wrapper"></div>
+                <div class="posts-wrapper">
+                  <div class="single-post">
+                    <div class="post-content">
+                      <p>lololol</p>
+                    </div>
+
+                    <hr />
+
+                    <div class="post-info">
+                      <p class="author">Autor: dzoni</p>
+
+                      <div class="post-btns-wrapper">
+                        <button class="likesBtn">
+                          <img src="img/like.png" />
+                        </button>
+                        <span>0</span>
+                        <span>Likes</span>
+
+                        <button class="comment-other-btn">
+                          <img src="img/comment.png" />
+                        </button>
+                        <span>Comment</span>
+                      </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="comment-form">
+                      <input type="text" id="commentInput" />
+                      <button id="postComment">Napisi komentar</button>
+                    </div>
+
+                    <!-- <div class="comment-content">
+                      <p>alaaaa</p>
+                    </div> -->
+                  </div>
+                </div>
               </form>
 
               <div class="custom-modal">

@@ -89,3 +89,5 @@ const loginUser = async function () {
 
 createUser();
 loginUser();
+
+console.log('radi');
