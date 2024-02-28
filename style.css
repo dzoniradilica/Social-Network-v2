@@ -268,7 +268,7 @@ body {
   width: 79%;
 }
 
-.overlay #postForm .posts-wrapper .postComment {
+.overlay #postForm .posts-wrapper #postComment {
   width: 20%;
 }
 

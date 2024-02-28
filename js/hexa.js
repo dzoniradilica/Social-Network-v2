@@ -28,7 +28,9 @@ const addPosts = function (postsDiv, singlePost, author, currentUser) {
         <p class="author">Autor: ${author?.username}</p>
 
         <div class="post-btns-wrapper">
-          <button data-likes-id="${singlePost.id}" class="likesBtn">
+          <button onclick="likePost(this)" data-likes-id="${
+            singlePost.id
+          }" class="likesBtn">
             <img src="img/like.png" />
           </button>
           <span>${singlePost.likes}</span>
@@ -53,7 +55,7 @@ const addPosts = function (postsDiv, singlePost, author, currentUser) {
           <input type="text" id="commentInput" />
           <button  data-comment-id="${
             singlePost.id
-          }" class="postComment">Napisi komentar</button>
+          }" id="postComment">Napisi komentar</button>
         </div>
     </div>
 `;
@@ -204,37 +206,37 @@ const displayAllPosts = async function () {
 
       const comment = new Comment();
 
-      let commentForm = document.querySelector('.comment-form');
-      commentForm.style.display = 'block';
+      const singlePostDiv = e.currentTarget.closest('.single-post');
+
+      singlePostDiv.querySelector('.comment-form').style.display = 'block';
 
       e.currentTarget.setAttribute('disabled', true);
 
-      document.querySelector('.postComment').addEventListener('click', e => {
-        e.preventDefault();
+      document.querySelectorAll('#postComment').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
 
-        let commentContent = document.querySelector('#commentInput');
-
-        if (commentContent.value) {
+          let commentContent = e.target.previousElementSibling;
           const postID = +e.target.dataset.commentId;
 
           comment.userID = sessionID;
           comment.postID = postID;
           comment.content = commentContent.value;
 
-          comment.create();
-
-          document.querySelector('.single-post').innerHTML += `
+          let singlePost = e.target.closest('.single-post');
+          let html = `
             <div class="comment-content">
               <p>${commentContent.value}</p>
             </div>
           `;
 
-          document.querySelector('.comment-form').style.display = 'none';
-        } else {
-          alert('Moras napisati komentar');
-        }
+          singlePost.insertAdjacentHTML('beforeend', html);
 
-        commentContent.value = '';
+          comment.create();
+
+          singlePost.querySelector('.comment-form').style.display = 'none';
+          singlePost.querySelector('.comment-form').innerHTML = '';
+        });
       });
     });
   });
@@ -262,5 +264,3 @@ const displayAllPosts = async function () {
 
 setUserData();
 displayAllPosts();
-
-console.log('radi');
