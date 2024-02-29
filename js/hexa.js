@@ -278,6 +278,8 @@ const displayAllPosts = async function () {
 
   removePost();
 
+  likeBtns();
+
   commentBtns();
 };
 
