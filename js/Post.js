@@ -45,9 +45,21 @@ class Post {
 
   async delete(postID) {
     try {
+      let comment = new Comment();
+      let singlePost = await this.getSinglePost(postID);
+      let allCommetns = await comment.getAll();
+      let relatedComm = allCommetns.filter(comm => comm.post_id === postID);
+
+      relatedComm.forEach(comm => {
+        comment.deleteComm(comm.id);
+      });
+
       const res = await fetch(`${this.apiUrl}/posts/${postID}`, {
         method: 'DELETE',
       });
+      const data = await res.json();
+
+      console.log(singlePost);
     } catch (err) {
       console.log(err);
     }

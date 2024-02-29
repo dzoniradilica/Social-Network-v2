@@ -144,13 +144,15 @@ const removePostData = async function (e) {
   let singlePost = e.target.closest('.single-post');
   let allCommetns = singlePost.querySelectorAll('.comment-content');
 
-  post.delete(postID);
-
   allCommetns.forEach(singleComment => {
     let comment_id = Number(singleComment.getAttribute('data-comment-id'));
 
     comment.deleteComm(comment_id);
   });
+
+  setTimeout(() => {
+    post.delete(postID);
+  }, 2000);
 
   e.target.closest('.single-post').remove();
 };
