@@ -1,7 +1,7 @@
 # SOCIAL NETWORK
 
-Registration Form
-Login Form
+-Registration Form
+-Login Form
 
 User Functions : 
 - Add Post
